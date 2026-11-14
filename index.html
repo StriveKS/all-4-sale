@@ -383,5 +383,22 @@
     updateBuyBar();
   }
 </script>
+<script>
+(() => {
+  const source = new URLSearchParams(window.location.search);
+  const campaignKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"];
+
+  for (const link of document.querySelectorAll('a[href^="https://pay.kiwify.com.br/dmDUI1F"]')) {
+    const checkout = new URL(link.href);
+    if (checkout.origin !== "https://pay.kiwify.com.br" || checkout.pathname !== "/dmDUI1F") continue;
+
+    for (const key of campaignKeys) {
+      const value = source.get(key);
+      if (value && !checkout.searchParams.has(key)) checkout.searchParams.set(key, value);
+    }
+    link.href = checkout.href;
+  }
+})();
+</script>
 </body>
 </html>
